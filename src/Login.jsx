@@ -1,32 +1,31 @@
 import React, { useState } from "react";
-// Loading.jsx import করলেই spinner কাজ করবে, এখন বাদ দিয়েছি
 import "./Login.css";
 
+// Firebase import
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "./firebase";
 
 const Login = () => {
   const [phoneOrEmail, setPhoneOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [msg, setMsg] = useState(""); // backend message
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: phoneOrEmail,
-          password: password,
-        }),
+      
+      await addDoc(collection(db, "users"), {
+        phoneOrEmail: phoneOrEmail,
+        password: password, 
+        createdAt: serverTimestamp(),
       });
 
-      const data = await res.json();
-      setMsg(data.message); // backend থেকে message দেখাবে
+      
+      setPhoneOrEmail("");
+      setPassword("");
     } catch (error) {
-      console.log(error);
-      setMsg("Something went wrong");
+      console.error(error);
     }
   };
 
@@ -53,6 +52,7 @@ const Login = () => {
                 required
                 className="login-input"
               />
+
               <div className="password-wrapper">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -71,13 +71,12 @@ const Login = () => {
                 </button>
               </div>
 
-              {/* Button নাম Log in, কিন্তু signup হবে */}
               <button type="submit" className="login-btn">
                 Log in
               </button>
             </form>
 
-            <p>{msg}</p> {/* backend message */}
+            
 
             <a href="#" className="forgot-password">
               Forgotten password?

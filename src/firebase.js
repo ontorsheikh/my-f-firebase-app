@@ -1,8 +1,8 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-// 🔴 Firebase config (STEP 3 থেকে copy করা config এখানে paste করো)
+
 const firebaseConfig = {
   apiKey: "AIzaSyBltdyYX9q0kgX0oC8lZWaAJCSxfn796ts",
   authDomain: "my-f-project-91c0b.firebaseapp.com",
